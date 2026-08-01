@@ -1,12 +1,21 @@
-require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
-const routes = require('./routes');
 const app = express();
+
 const PORT = process.env.PORT || 3000;
-app.use(cors());
+
+// Middleware para entender JSON
 app.use(express.json());
-app.use('/', routes);
+
+// Endpoint de monitoreo / Health Check
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'UP',
+    message: 'API funcionando correctamente',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Levantar el servidor (SIEMPRE AL FINAL)
 app.listen(PORT, () => {
-console.log(`Servidor corriendo en el puerto ${PORT}`);
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
